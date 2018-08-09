@@ -23,13 +23,15 @@ JDBC 读写分离 ， 源码完全来自sharding-jdbc , 剥离出读写分离部
         DataSource masterSlaveDataSource = new MasterSlaveDataSource(masterSlaveRule);
 
         /* 像普通的DataSource一样使用 */
-        Connection connection = masterDataSource.getConnection();
+        Connection connection = masterSlaveDataSource.getConnection();
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        Statement statement = connection.createStatement();
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        int age = resultSet.getInt("age");
+        ResultSet resultSet = statement.executeQuery(sql);
+        if (resultSet.next()) {
+            int age = resultSet.getInt(1);
+            System.out.println(age);
+        }
 
 
 ```
