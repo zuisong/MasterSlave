@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Map;
 
 public class TestSqlParser {
     @Test
@@ -37,15 +38,19 @@ public class TestSqlParser {
         String sql = "  SELECT count(*) FROM tuser";
         String sql2 = "UPDATE tuser  SET  loginName='chenjian' WHERE id = 142";
 
-        DataSource masterDataSource = getDataSource("jdbc:mysql://192.168.10.203:3306/jte253test?useUnicode=true", "root", "xyz11111111");
-        DataSource slave1DataSource = getDataSource("jdbc:mysql://192.168.10.203:3306/jte253?useUnicode=true", "root", "xyz11111111");/* 这里自行获取slave1DataSource */
+        DataSource masterDataSource =
+                getDataSource("jdbc:mysql://192.168.10.203:3306/jte253test?useUnicode=true", "root", "xyz11111111");
+        DataSource slave1DataSource =
+                getDataSource("jdbc:mysql://192.168.10.203:3306/jte253?useUnicode=true", "root", "xyz11111111");/* 这里自行获取slave1DataSource */
         /* 这里自行获取slave3DataSource */
 
-        ImmutableMap<String, DataSource> slaveDataSources = ImmutableMap.of(
+        Map<String, DataSource> slaveDataSources = ImmutableMap.of(
                 "slave1DataSource", slave1DataSource
+//                "slave1DataSource1", slave1DataSource2
         );
         MasterSlaveRule masterSlaveRule =
-                new MasterSlaveRule("masterSlaveDataSource", "masterDataSource", masterDataSource, slaveDataSources);
+                new MasterSlaveRule("masterSlaveDataSource",
+                        "masterDataSource", masterDataSource, slaveDataSources);
 
 
         /* masterSlaveDataSource 会自动进行读写分离 */

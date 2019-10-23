@@ -55,7 +55,9 @@ public final class MasterSlaveConnection extends AbstractConnectionAdapter {
      */
     public Collection<Connection> getConnections(final SQLType sqlType) throws SQLException {
         cachedSQLType = sqlType;
-        Map<String, DataSource> dataSources = SQLType.DDL == sqlType ? masterSlaveDataSource.getMasterDataSource() : masterSlaveDataSource.getDataSource(sqlType).toMap();
+        Map<String, DataSource> dataSources = SQLType.DDL == sqlType
+                ? masterSlaveDataSource.getMasterDataSource() :
+                masterSlaveDataSource.getDataSource(sqlType).toMap();
         Collection<Connection> result = new LinkedList<>();
         for (Entry<String, DataSource> each : dataSources.entrySet()) {
             String dataSourceName = each.getKey();

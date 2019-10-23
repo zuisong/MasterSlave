@@ -69,7 +69,8 @@ public final class MasterSlaveStatement extends AbstractStatementAdapter {
     @Override
     public ResultSet executeQuery(final String sql) throws SQLException {
         val sqlType = new SQLJudgeEngine(sql).judge();
-        Collection<Connection> connections = connection.getConnections(sqlType);
+        Collection<Connection> connections =
+                connection.getConnections(sqlType);
         Preconditions.checkState(1 == connections.size(), "Cannot support executeQuery for DDL");
         Statement statement = connections.iterator().next().createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
         routedStatements.add(statement);
